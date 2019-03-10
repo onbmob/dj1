@@ -1,13 +1,27 @@
 {% load static %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'status/style.css' %}">
+
+
+<h1>Status, поиск по  {{ view.select }} {{ request.POST.name_field }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+
+<form action="{% url 'status:msearch'%}" method="post">
+{% csrf_token %}
+    <label for="team_name">Поиск: </label>
+    <input id="team_name" type="text" name="name_field" value="Артикул">
+    <input type="submit" value="OK">
+</form>
+
 {% if latest_question_list %}
     <ul>
     {% for question in latest_question_list %}
 {#        <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>#}
-        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+        <li>{{ question.article }} / {{ question.brand }} -- {{ question.description }}</li>
     {% endfor %}
     </ul>
 {% else %}
-    <p>No polls are available.</p>
+    <p>Ничего не найдено.</p>
 {% endif %}

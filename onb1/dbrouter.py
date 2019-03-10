@@ -11,8 +11,8 @@ class DbRouter(object):
             return 'status'
         if model._meta.db_table == 'test1':
             return 'default'
-        if model._meta.app_label == 'polls':
-            return 'dj2local'
+        # if model._meta.app_label == 'polls':
+        #     return 'dj2local'
         return None
 
     def db_for_write(self, model, **hints):
@@ -21,8 +21,8 @@ class DbRouter(object):
             return 'status'
         if model._meta.db_table == 'test1':
             return 'default'
-        if model._meta.app_label == 'polls':
-            return 'dj2local'
+        # if model._meta.app_label == 'polls':
+        #     return 'dj2local'
         return None
 
     def allow_relation(self, obj1, obj2, **hints):
