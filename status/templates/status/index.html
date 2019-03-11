@@ -3,25 +3,45 @@
 <link rel="stylesheet" type="text/css" href="{% static 'status/style.css' %}">
 
 
-<h1>Status, поиск по  {{ view.select }} {{ request.POST.name_field }}</h1>
+<h1>Status, поиск по {{ view.select }} {{ request.POST.name_field }}</h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 
-<form action="{% url 'status:msearch'%}" method="post">
-{% csrf_token %}
+<form action="{% url 'status:msearch' %}" method="post">
+    {% csrf_token %}
     <label for="team_name">Поиск: </label>
     <input id="team_name" type="text" name="name_field" value="Артикул">
     <input type="submit" value="OK">
 </form>
 
-{% if latest_question_list %}
-    <ul>
-    {% for question in latest_question_list %}
-{#        <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>#}
-        <li>{{ question.article }} / {{ question.brand }} -- {{ question.description }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>Ничего не найдено.</p>
-{% endif %}
+<table>
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>Артикул</td>
+        <td>Бренд</td>
+        <td>Описание</td>
+        <td>Цена</td>
+        <td>К-во</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% if latest_question_list %}
+        {% for item in latest_question_list %}
+            <tr>
+                <td>{{ item.id_product }}</td>
+                <td>{{ item.article }}</td>
+                <td>{{ item.brand }}</td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.balance }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    {% else %}
+        <p>Ничего не найдено.</p>
+    {% endif %}
+
+
