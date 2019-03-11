@@ -16,9 +16,29 @@ class IndexView(generic.ListView):
         )#.order_by('-pub_date')[:5]
 
 def msearch(request):
+    # from zeep import Client
+
+    # 'host' = > 'https://status-m.com.ua/ws/',
+    # 'login' = > 'wser',
+    # 'password' = > 'a1s2d3f4g5h6'
+
+    # client = Client('http://www.webservicex.net/ConvertSpeed.asmx?WSDL')
+    # result = client.service.ConvertSpeed(
+    #     100, 'kilometersPerhour', 'milesPerhour')
+    #
+    # assert result == 62.137
+
+    import zeep
+
+
+    wsdl = 'https://status-m.com.ua/ws/ProductSearch_new.1cws?wsdl'
+    product_search = Ws1c(wsdl, 'wser', 'a1s2d3f4g5h6')
+    response = product_search.client.service.SearchClient(query=code)
+    aaa = product_search.to_object(response)['data']
+
     select = request.POST['name_field']
     latest_question_list = TablePsPrice1C.objects.filter(
-            article__contains=select
+            article__icontains=select
         )
     context = {'latest_question_list': latest_question_list}
     return render(request, 'status/index.html', context)
